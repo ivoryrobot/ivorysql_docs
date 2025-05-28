@@ -106,7 +106,7 @@ jobs:
         with:
           repository:  ${{ github.repository_owner }}/ivorysql_web
           path: www_publish_target
-          # token: ${{ secrets.IVORY_TOKEN }}
+          token: ${{ secrets.IVORY_TOKEN }}
           
       - name: Setup Ruby and Bundler
         uses: ruby/setup-ruby@v1
