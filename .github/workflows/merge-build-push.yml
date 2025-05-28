@@ -90,13 +90,22 @@ jobs:
               echo "WARNING: Playbook file $PLAYBOOK_FILE not found in $(pwd)."
             fi
           done
-
+      - name: Check if IVORY_TOKEN secret is available
+        run: |
+          if [ -z "${{ secrets.IVORY_TOKEN }}" ]; then
+            echo "::error::The IVORY_TOKEN secret is NOT available or is empty."
+          else
+            echo "The IVORY_TOKEN secret is present. Its length is ${{ env.TOKEN_LENGTH }}."
+          fi
+        env:
+          TOKEN_LENGTH: ${{ secrets.IVORY_TOKEN && 'non-empty' || 'empty' }} # A simpler way to check presence
+         
       - name: Checkout Web Repository (web)
         uses: actions/checkout@v4
         with:
           repository:  ${{ github.repository_owner }}/ivorysql_web
           path: www_publish_target
-          token: ${{ secrets.IVORY_TOKEN }}
+          # token: ${{ secrets.IVORY_TOKEN }}
           
       - name: Setup Ruby and Bundler
         uses: ruby/setup-ruby@v1
